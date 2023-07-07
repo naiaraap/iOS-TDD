@@ -9,8 +9,9 @@
 import Foundation
 
 class Avaliador {
-    private var maiorValor = Double.leastNonzeroMagnitude
+  private var maiorValor = Double.leastNonzeroMagnitude
   private var menorValor = Double.greatestFiniteMagnitude
+  private var tresMaiores = [Lance]()
   
   
   func avalia(_ leilao: Leilao) {
@@ -20,7 +21,7 @@ class Avaliador {
       if lance.valor > maiorValor {
         maiorValor = lance.valor
       }
-      else if lance.valor < menorValor {
+      if lance.valor < menorValor {
         menorValor = lance.valor
       }
     }
@@ -33,5 +34,15 @@ class Avaliador {
   func menorLance() -> Double {
     return menorValor
   }
-
+  
+  func getTresMaiores(_ leilao: Leilao) -> [Lance] {
+    guard let offers = leilao.lances else { return [] }
+    
+    tresMaiores = offers.sorted(by: { (offer1, offer2) -> Bool in
+      return offer1.valor > offer2.valor
+    })
+    
+    tresMaiores = Array(tresMaiores.prefix(3))
+    return tresMaiores
+  }
 }
