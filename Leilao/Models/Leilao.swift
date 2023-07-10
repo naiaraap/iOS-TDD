@@ -20,9 +20,17 @@ class Leilao {
         self.lances = lances
     }
   
+  func getTheLastOffer(_ lances: [Lance]?) -> Lance {
+    guard let offersList = lances else { return Lance(Usuario(nome: ""), 0) }
+    if offersList.isEmpty {
+      return Lance(Usuario(nome: ""), 0) }
+    
+    return offersList[offersList.count - 1]
+  }
+  
   func isTheSameConsecutiveUserOffer(_ usuario:Usuario, _ lances:[Lance]?) -> Bool {
     guard let offersList = lances else { return false }
-    return offersList.last?.usuario == usuario
+    return getTheLastOffer(offersList).usuario == usuario
   }
   
   func canMakeOffer(_ usuario:Usuario, _ lances:[Lance]?) -> Bool {

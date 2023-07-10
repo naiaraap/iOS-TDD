@@ -58,6 +58,17 @@ class LeilaoTests: XCTestCase {
     XCTAssertEqual(3000.0, leilao.lances?.last?.valor)
   }
   
+  func testShouldGetLastOffer(){
+    let leilao = Leilao(descricao: "Playstation 5")
+    let usuario1 = Usuario(nome: "José")
+    let usuario2 = Usuario(nome: "Maria")
+    leilao.propoe(lance: Lance(usuario1, 2000.0))
+    leilao.propoe(lance: Lance(usuario2, 3000.0))
+    
+    XCTAssertEqual(3000.0, leilao.getTheLastOffer(leilao.lances).valor)
+    XCTAssertEqual(usuario2, leilao.getTheLastOffer(leilao.lances).usuario)
+  }
+  
   func testShouldVerifyTwoConsecutiveOffersUsersAsSame(){
     let leilao = Leilao(descricao: "Playstation 5")
     let usuario = Usuario(nome: "José")
