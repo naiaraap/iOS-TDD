@@ -58,6 +58,27 @@ class LeilaoTests: XCTestCase {
     XCTAssertEqual(3000.0, leilao.lances?.last?.valor)
   }
   
+  func testShouldVerifyTwoConsecutiveOffersUsersAsSame(){
+    let leilao = Leilao(descricao: "Playstation 5")
+    let usuario = Usuario(nome: "José")
+    leilao.propoe(lance: Lance(usuario, 2000.0))
+    XCTAssertEqual(true, leilao.isTheSameConsecutiveUserOffer(usuario, leilao.lances))
+  }
+  
+  func testShouldVerifyFirstOfferUserAsNotConsecutive() {
+    let leilao = Leilao(descricao: "Playstation 5")
+    let usuario = Usuario(nome: "José")
+    XCTAssertEqual(false, leilao.isTheSameConsecutiveUserOffer(usuario, leilao.lances))
+  }
+  
+  func testShouldVerifyTwoConsecutiveOffersUsersAsDifferent(){
+    let leilao = Leilao(descricao: "Playstation 5")
+    let usuario = Usuario(nome: "José")
+    let maria = Usuario(nome: "Maria")
+    leilao.propoe(lance: Lance(usuario, 2000.0))
+    XCTAssertEqual(false, leilao.isTheSameConsecutiveUserOffer(maria, leilao.lances))
+  }
+  
   func testShouldConsidererOfferInvalid() {
     let leilao = Leilao(descricao: "Playstation 5")
     let usuario = Usuario(nome: "José")
