@@ -19,8 +19,20 @@ class Leilao {
         self.imagem = imagem
         self.lances = lances
     }
+  
+  func canMakeOffer(_ usuario:Usuario, _ lances:[Lance]?) -> Bool {
+    guard let offersList = lances else { return false }
+    if offersList.count == 0 { return true }
+    else if offersList.last?.usuario != usuario {
+      return true
+    }
+    return false
+  }
     
     func propoe(lance:Lance) {
+      guard let offersList = lances else { return }
+      if canMakeOffer(lance.usuario, offersList) {
         lances?.append(lance)
+      }
     }
 }
