@@ -40,7 +40,9 @@ final class AvaliadorTests: XCTestCase {
     leilao.propoe(lance: Lance(joao, 300.0))
     leilao.propoe(lance: Lance(jose, 400.0))
     
-    leiloeiro.avalia(leilao)
+    try? leiloeiro.avalia(leilao)
+    
+    try? leiloeiro.avalia(leilao)
     
     // Validacao
     let maior = 400.0
@@ -55,7 +57,7 @@ final class AvaliadorTests: XCTestCase {
     let leilao = Leilao(descricao: "Playstation 4")
     leilao.propoe(lance: Lance(maria, 1000.0))
     
-    leiloeiro.avalia(leilao)
+    try? leiloeiro.avalia(leilao)
     
     // Validacao
     // Validacao
@@ -85,4 +87,14 @@ final class AvaliadorTests: XCTestCase {
     XCTAssertEqual(500.0, maiores[1].valor)
     XCTAssertEqual(400.0, maiores[2].valor)
   }
+  
+  func testShouldNotAllowAuctionWithoutOffers() {
+    
+    let leilao = CriadorDeLeillao().para(descricao: "Playstation 4").constroi()
+    
+    XCTAssertThrowsError(try leiloeiro.avalia(leilao), "Não é possível avaliar um leilão sem ofertas!") { (error) in
+      print(error.localizedDescription)
+    }
+  }
+  
 }

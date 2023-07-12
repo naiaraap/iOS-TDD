@@ -14,7 +14,12 @@ class Avaliador {
   private var tresMaiores = [Lance]()
   
   
-  func avalia(_ leilao: Leilao) {
+  func avalia(_ leilao: Leilao) throws {
+    
+    if leilao.lances?.count == 0 {
+      throw ErrorsEnumeration.AuctionWithoutOffers("Não é possível avaliar um leilão sem ofertas!")
+    }
+    
     guard let lances = leilao.lances else { return }
     
     for lance in lances {
