@@ -10,9 +10,23 @@ import XCTest
 @testable import Leilao
 
 final class AvaliadorTests: XCTestCase {
+  
+  var joao: Usuario!
+  var jose: Usuario!
+  var maria: Usuario!
+  var ana: Usuario!
+  var pedro: Usuario!
+  
+  var leiloeiro: Avaliador!
 
     override func setUpWithError() throws {
-        
+      joao = Usuario(nome: "Joao")
+      jose = Usuario(nome: "Jose")
+      maria = Usuario(nome: "Maria")
+      ana = Usuario(nome: "Ana")
+      pedro = Usuario(nome: "Pedro")
+      
+      leiloeiro = Avaliador()
     }
 
     override func tearDownWithError() throws {
@@ -20,18 +34,12 @@ final class AvaliadorTests: XCTestCase {
     }
 
   func testShouldGetOffersInAscendingOrder() {
-    // Cenario
-    let joao = Usuario(nome: "Joao")
-    let jose = Usuario(nome: "Jose")
-    let maria = Usuario(nome: "Maria")
     
     let leilao = Leilao(descricao: "Playstation 4")
     leilao.propoe(lance: Lance(maria, 250.0))
     leilao.propoe(lance: Lance(joao, 300.0))
     leilao.propoe(lance: Lance(jose, 400.0))
     
-    // Acao
-    let leiloeiro = Avaliador()
     leiloeiro.avalia(leilao)
     
     // Validacao
@@ -43,14 +51,10 @@ final class AvaliadorTests: XCTestCase {
   }
   
   func testShouldGetOffersWithOnlyOneOffer() {
-    // Cenario
-    let maria = Usuario(nome: "Maria")
     
     let leilao = Leilao(descricao: "Playstation 4")
     leilao.propoe(lance: Lance(maria, 1000.0))
     
-    // Acao
-    let leiloeiro = Avaliador()
     leiloeiro.avalia(leilao)
     
     // Validacao
@@ -63,23 +67,15 @@ final class AvaliadorTests: XCTestCase {
   }
   
   func testsShouldGetThreeBiggestOffers() {
-    // Cenario
-    let joao = Usuario(nome: "Joao")
-    let jose = Usuario(nome: "Jose")
-    let maria = Usuario(nome: "Maria")
-    let ana = Usuario(nome: "Ana")
-    let pedro = Usuario(nome: "Pedro")
     
-    
-    let leilao = Leilao(descricao: "Playstation 4")
-    leilao.propoe(lance: Lance(maria, 250.0))
-    leilao.propoe(lance: Lance(joao, 300.0))
-    leilao.propoe(lance: Lance(jose, 400.0))
-    leilao.propoe(lance: Lance(ana, 500.0))
-    leilao.propoe(lance: Lance(pedro, 600.0))
-    
-    // Acao
-    let leiloeiro = Avaliador()
+    let leilao = CriadorDeLeillao()
+      .para(descricao: "Playstation 4")
+      .lance(maria, 250.0)
+      .lance(joao, 300.0)
+      .lance(maria, 400.0)
+      .lance(joao, 500.0)
+      .lance(maria, 600.0)
+      .constroi()
     
     // Validacao
     let maiores = leiloeiro.getTresMaiores(leilao)
@@ -89,6 +85,4 @@ final class AvaliadorTests: XCTestCase {
     XCTAssertEqual(500.0, maiores[1].valor)
     XCTAssertEqual(400.0, maiores[2].valor)
   }
-  
-
 }

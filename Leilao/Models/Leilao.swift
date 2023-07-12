@@ -33,9 +33,14 @@ class Leilao {
     return getTheLastOffer(offersList).usuario == usuario
   }
   
+  func getNumberOfOffersByUser(_ usuario: Usuario) -> Int {
+    guard let offersList = lances else { return 0 }
+    return offersList.filter({ $0.usuario == usuario }).count
+  }
+  
   func canMakeOffer(_ usuario:Usuario, _ lances:[Lance]?) -> Bool {
     guard let offersList = lances else { return false }
-    if isTheSameConsecutiveUserOffer(usuario, offersList) == false {
+    if isTheSameConsecutiveUserOffer(usuario, offersList) == false && getNumberOfOffersByUser(usuario) < 5 {
       return true
     }
     return false
